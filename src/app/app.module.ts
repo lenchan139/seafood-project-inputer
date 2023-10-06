@@ -21,7 +21,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ScanToProjectPageComponent } from './pages/scan-to-project-page/scan-to-project-page.component';
-
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +37,7 @@ import { ScanToProjectPageComponent } from './pages/scan-to-project-page/scan-to
     AppRoutingModule,
     BrowserAnimationsModule,
 
-
+    FormsModule,
     MatMenuModule,
     MatListModule,
     MatToolbarModule,
@@ -51,6 +51,7 @@ import { ScanToProjectPageComponent } from './pages/scan-to-project-page/scan-to
     MatSnackBarModule,
     MatDialogModule,
     MatFormFieldModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

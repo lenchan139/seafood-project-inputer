@@ -19,7 +19,7 @@
   v
   <mat-sidenav-container class="sidenav-container" >
   
-    <mat-sidenav id="sidenav" #drawer class="sidenav" ([ngModel])="sidenav" fixedInViewport="true"
+    <mat-sidenav id="sidenav" #drawer class="sidenav"  fixedInViewport="true"
       (elementScrolled)="updateScroll($event)" (openedChange)="onSidenavOpnedUpdate($event)"
       [attr.role]="(isHandset$ | async) || isHeadlessChrome ? 'dialog' : 'navigation'" fixedInViewport="true"
       [mode]="(isHandset$ | async) || isHeadlessChrome ? 'over' : 'side'"

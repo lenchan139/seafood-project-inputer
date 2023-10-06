@@ -1,1 +1,38 @@
-<p>scan-to-project-page works!</p>
+<div class="all">
+    <div class="uploadPart">
+
+        <input #uploadInputElement type="file" 
+        id="uploadImageInput"
+        class="file-upload" accept="image/*" capture="user"
+            (change)="onUploadImage($event)" 
+            *ngIf="!isFromSteaming"
+            style="display: none;"
+            />
+            <button mat-raised-button color="primary"
+            *ngIf="!isFromSteaming"
+            (click)="openCameraCaputureDocument();"
+            >
+        Take Image
+        </button>
+        
+        <canvas #uploadCanvas id="uploadCanvas" ></canvas>
+ 
+            <button mat-raised-button color="primary"
+    
+            (click)="caputureSteamingAndToImage();"
+            >
+        Take It
+        </button>
+  </div>
+
+    
+    <img #selectedImage id="selectedImage" class="selectedImage" />
+
+
+    <canvas #outputCanvas id="outputCanvas" ></canvas>
+
+    <button (click)="rotateControl(-1)">Left-R</button>
+    <button (click)="rotateControl(1)">Right-R</button>
+    
+    <div class="resultCanvas" #resultCanvas ></div>
+</div>

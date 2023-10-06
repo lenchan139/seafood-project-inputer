@@ -13,8 +13,8 @@ export class CommonService {
   private keyOfInAppUserAgent = 'app-in-webview'
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    public _snackbar: MatSnackBar,
-    public dialog: MatDialog,
+    private _snackbar: MatSnackBar,
+    private dialog: MatDialog,
     private sanitizer: DomSanitizer,
     private router: Router,
     @Inject(DOCUMENT) private document: Document,
