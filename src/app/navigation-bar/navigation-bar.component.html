@@ -1,0 +1,132 @@
+<span style="display: none;">
+    <span *ngFor="let item of topNavItems">
+      <span *ngIf="item && item.path && !item.requireLogin">
+        <a [href]="item.path"></a>
+      </span>
+    </span>
+  
+    <!-- <span *ngFor="let navItem of navItems">
+      <span *ngIf="!navItem.companyOnly">
+        <span *ngFor="let item of navItem.children">
+          <span *ngIf="item && item.path && !item.requireLogin">
+            <a [href]="item.path"></a>
+          </span>
+        </span>
+      </span>
+    </span>
+  -->
+  </span> 
+  v
+  <mat-sidenav-container class="sidenav-container" >
+  
+    <mat-sidenav id="sidenav" #drawer class="sidenav" ([ngModel])="sidenav" fixedInViewport="true"
+      (elementScrolled)="updateScroll($event)" (openedChange)="onSidenavOpnedUpdate($event)"
+      [attr.role]="(isHandset$ | async) || isHeadlessChrome ? 'dialog' : 'navigation'" fixedInViewport="true"
+      [mode]="(isHandset$ | async) || isHeadlessChrome ? 'over' : 'side'"
+      [opened]="onlyInHomepage && (isHandset$ | async)  === false && !isHeadlessChrome ">
+      <!-- <mat-toolbar>選單</mat-toolbar> -->
+      <mat-nav-list fxLayout="column">
+        
+        <!-- guest status -->
+        <div *ngIf="true" class="userSet">
+          <div class="left">
+            <img loading="lazy" class="icon"
+              [src]=" '/assets/no_profile_pic.png'" />
+          </div>
+          <div class="right">
+            <div class="displayName">{{'guest'}}</div>
+            <button class="signButton" mat-stroked-button color="primary"
+              >{{'login'}}</button>
+          </div>
+        </div>
+        <hr />
+  
+        <!-- navbar item list -->
+        <mat-action-list>
+          <ng-container *ngFor="let item of topNavItems">
+            <ng-container *ngIf="item&&!item.shouldHide">
+              <button mat-list-item *ngIf="(item && item.requireLogin ) || (item && !item.requireLogin)"
+                [style.fontWeight]="item.shouldBold ?'bold':''" (click)="closeNavBar()" [routerLink]="item.path"> <i
+                  [class]="item.icon"></i> {{item.displayName}}
+              </button>
+  
+            </ng-container>
+            <hr *ngIf="item === null">
+          </ng-container>
+          <hr>
+        </mat-action-list>
+  
+  
+      </mat-nav-list>
+  
+      <!-- Footer - i18n -->
+      <div class="sidenav-footer">
+        <!-- <app-nav-footer></app-nav-footer> -->
+  
+      </div>
+  
+    </mat-sidenav>
+  
+    <mat-sidenav-content (elementScrolled)="updateScroll($event)" #sidenavContainer autosize>
+      <mat-toolbar color="primary" #toolbar>
+        <div class="toolbar" [style.marginRight]=" (isHandset$|async)?'':'240px'">
+          <span class="left">
+  
+            <span class="sidenav-button-outer">
+              <span type="button" class="sidenav-button-inner">
+                <span class="sidenav-click-border" *ngIf="canGoBack" (click)="tryGoBack()">
+                  <span>
+                    <i class="fas fa-chevron-left"></i>
+                  </span>
+                </span>
+              </span>
+              <span id="sidenav-toggle-button" class="sidenav-button-inner" aria-label="Toggle sidenav"
+                (click)="drawer.toggle()" *ngIf="(isHandset$ | async) ">
+                <span class="sidenav-click-border">
+                  <span>
+                    {{'menu'}}
+                    <i class="fas fa-bars"></i></span>
+                </span>
+              </span>
+            </span>
+            <span routerLink="/" class="appTitle">
+              <i class="fas fa-home"></i>
+  
+              {{'appTitle'}}</span>
+          </span>
+          <span class="right">
+            <a style="border-left: grey 2px solid;border-right: grey 2px solid;">
+              <button mat-icon-button color="primary" class="example-icon favorite-icon" >
+                <mat-icon>search</mat-icon>
+              </button>
+            </a>
+          </span>
+        </div>
+      </mat-toolbar>
+  
+      <!-- Add Content Here -->
+      <div class="content" id="content" #content [style.marginTop]="displayForceHideSideBar=='none'?'0px':'64px'">
+  
+        <div class="pwa_banner_ios" *ngIf="false">
+          <div class="outer">
+            <div class="inner">
+              <div class="left">
+                <i class="far fa-plus-square"></i>
+              </div>
+              <div class="right">
+                Install this app to your iPhone by clicking <img loading="lazy" src="assets/icons/ios_share_button.png">
+                then "add to
+                screen".
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <ng-content></ng-content>
+  
+  
+      </div>
+  
+    </mat-sidenav-content>
+  
+  </mat-sidenav-container>
