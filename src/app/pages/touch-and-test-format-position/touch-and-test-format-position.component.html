@@ -1,4 +1,23 @@
 <div class="all">
+    <div class="uload">
+
+        <input #uploadInputElement type="file" 
+        id="uploadImageInput"
+        class="file-upload" accept="image/*" capture="user"
+            (change)="onUploadImage($event)" 
+           
+            style="display: none;"
+            />
+        
+        <canvas #uploadCanvas id="uploadCanvas" ></canvas>
+ 
+            <button mat-raised-button color="primary"
+    
+            (click)="clickInputUploadImage();"
+            >
+        Upload
+        </button>
+    </div>
     <div class="impageView">
         <img style="width: 100%;" class="loadImg" #loadImg  src="/assets/test_images/test.png" (click)="onImgClick($event)" (load)="drawAllBox()"/>
         <canvas #drawingCanvas ></canvas>

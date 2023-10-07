@@ -12,6 +12,8 @@ export class TouchAndTestFormatPositionComponent implements AfterViewInit {
 
   @ViewChild('loadImg') loadImg: ElementRef<HTMLImageElement> | undefined
   @ViewChild('drawingCanvas') drawingCanvas: ElementRef<HTMLCanvasElement> | undefined
+
+  @ViewChild('uploadInputElement') uploadImageInput: ElementRef<HTMLInputElement> | undefined
   constructor(
     private commonService: CommonService,
     private dialog: MatDialog,
@@ -113,6 +115,48 @@ export class TouchAndTestFormatPositionComponent implements AfterViewInit {
       if (ctx) {
         ctx.stroke();
       }
+    }
+  }
+
+
+  async onUploadImage(e: Event) {
+    console.log(e)
+    console.log(e.target)
+    const t = <HTMLInputElement>e.target
+
+    console.log(t.files)
+    if (t?.files && t?.files?.length > 0) {
+      const tfile1 = t.files[0]
+      const fileReader = new FileReader()
+      if (this.loadImg && this.loadImg?.nativeElement && tfile1) {
+        try {
+
+          // const buffer = await tfile1.arrayBuffer()
+
+          // this.selectedImage!.nativeElement!.onload = (e) => {
+          //   this.convertImgToDocumentCanvas()
+          // }
+          // this.selectedImage!.nativeElement!.src = URL.createObjectURL(tfile1)
+          // this.openCameraDialog(URL.createObjectURL(tfile1))
+          this.loadImg!.nativeElement.src = URL.createObjectURL(tfile1)
+
+
+        } catch (e: any) {
+          console.log('got file have error', e)
+          this.commonService.openSnackBarDefault("Converting file have erorr: ", `${e?.toString()}`)
+        }
+
+      }
+    }
+  }
+
+
+  
+  clickInputUploadImage() {
+    if (this.uploadImageInput?.nativeElement) {
+      console.log('1')
+      this.uploadImageInput.nativeElement.value = ""
+      this.uploadImageInput.nativeElement.click()
     }
   }
 }
