@@ -10,20 +10,43 @@ declare var cv: any
 })
 export class CameraDialogComponent implements AfterViewInit {
   @ViewChild('uploadCanvas') uploadCanvas: ElementRef<HTMLCanvasElement> | undefined
-  @ViewChild('displayImg') displayImg :ElementRef<HTMLImageElement> | undefined
-  @ViewChild('uploadImg') uploadImg :ElementRef<HTMLImageElement> | undefined
+  @ViewChild('displayImg') displayImg: ElementRef<HTMLImageElement> | undefined
+  @ViewChild('uploadImg') uploadImg: ElementRef<HTMLImageElement> | undefined
+  @ViewChild('inputImg1') inputImg: ElementRef<HTMLImageElement> | undefined
   constructor(
     private commonService: CommonService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CameraDialogComponent>
+    private dialogRef: MatDialogRef<CameraDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { dataURL: string }
   ) {
-    // this.openCameraCaputureDocument()
   }
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.openCameraCaputureDocument()
+
+    if (this.data?.dataURL && this.inputImg?.nativeElement) {
+console.log('incoming', this.data)
+        this.inputImg!.nativeElement.addEventListener("load", () => {
+          this.uploadCanvas!.nativeElement!.width = this.inputImg?.nativeElement.naturalWidth || 0
+          this.uploadCanvas!.nativeElement!.height = this.inputImg?.nativeElement.naturalHeight || 0
+          const ctx = this.uploadCanvas!.nativeElement!.getContext("2d")
+
+          if (ctx) {
+            ctx.drawImage(this.inputImg!.nativeElement, 0, 0);
+            // this.uploadCanvas!.nativeElement!.width = this.inputImg?.nativeElement.naturalWidth || 0
+            // this.uploadCanvas!.nativeElement!.height = this.inputImg?.nativeElement.naturalHeight || 0
+
+            console.log('incoming', ctx)
+            this.convertImgToDocumentCanvas()
+          }
+        })
+      
+      this.inputImg!.nativeElement.src = this.data.dataURL
+      this.displayImg!.nativeElement.src = this.data.dataURL
+    } else {
+      this.openCameraCaputureDocument()
+
+    }
   }
 
 
@@ -53,8 +76,8 @@ export class CameraDialogComponent implements AfterViewInit {
               // canvasCtx.clearRect(0, 0, this.uploadCanvas!.nativeElement.width, this.uploadCanvas!.nativeElement.height);  // Clear the canvas
               // canvasCtx.drawImage(resultCanvas, 0, 0);  // Draw the highlighted paper'
               canvasCtx
-              .drawImage(video, 0, 0, resultCanvas.width, resultCanvas.height);
-              if(this.displayImg?.nativeElement){
+                .drawImage(video, 0, 0, resultCanvas.width, resultCanvas.height);
+              if (this.displayImg?.nativeElement) {
                 this.displayImg!.nativeElement!.src = resultCanvas.toDataURL()
               }
               // console.log('vv',scanner.getCornerPoints())
@@ -75,7 +98,7 @@ export class CameraDialogComponent implements AfterViewInit {
     if (this.displayImg?.nativeElement?.src && this.uploadCanvas?.nativeElement) {
       const scanner = new jscanify();
       const c = cv.imread(this.uploadCanvas!.nativeElement)
-      const vxq =  scanner.findPaperContour(c)
+      const vxq = scanner.findPaperContour(c)
       const vx = scanner.getCornerPoints(vxq)
       const selectedActualSize = {
         bottomWidth: vx.bottomRightCorner.x - vx.bottomLeftCorner.x,
@@ -83,8 +106,8 @@ export class CameraDialogComponent implements AfterViewInit {
         rightHeight: vx.bottomRightCorner.y - vx.topRightCorner.y,
         topWidth: vx.topRightCorner.x - vx.topLeftCorner.x,
       }
-      console.log('corner ',vx)
-      console.log('corner size ',selectedActualSize)
+      console.log('corner ', vx)
+      console.log('corner size ', selectedActualSize)
 
 
 

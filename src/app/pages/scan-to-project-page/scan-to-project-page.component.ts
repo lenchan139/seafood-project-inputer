@@ -45,11 +45,11 @@ export class ScanToProjectPageComponent implements OnInit {
 
           // const buffer = await tfile1.arrayBuffer()
 
-          this.selectedImage!.nativeElement!.onload = (e) => {
-            this.convertImgToDocumentCanvas()
-          }
-          this.selectedImage!.nativeElement!.src = URL.createObjectURL(tfile1)
-
+          // this.selectedImage!.nativeElement!.onload = (e) => {
+          //   this.convertImgToDocumentCanvas()
+          // }
+          // this.selectedImage!.nativeElement!.src = URL.createObjectURL(tfile1)
+          this.openCameraDialog(URL.createObjectURL(tfile1))
 
 
 
@@ -143,27 +143,27 @@ export class ScanToProjectPageComponent implements OnInit {
 
   }
 
-  openCameraDialog() {
+  openCameraDialog(dataURL?:string) {
     const dialogRef = this.dialog.open(CameraDialogComponent, {
       data: {
-
+        dataURL:dataURL||''
       }
     })
     dialogRef.afterClosed().subscribe(dataURL => {
-      if(dataURL){
+      if (dataURL) {
         console.log(dataURL)
         this.openCropDialog(dataURL)
       }
     })
   }
-  openCropDialog(dataURL: string){
+  openCropDialog(dataURL: string) {
     const dialogRef = this.dialog.open(CropDialogComponent, {
       data: {
         dataURL: dataURL,
       }
     })
     dialogRef.afterClosed().subscribe(dataURL => {
-      if(dataURL){
+      if (dataURL) {
         console.log(dataURL)
       }
     })
