@@ -1,0 +1,23 @@
+<div class="dialog">
+    <div mat-dialog-content>
+     <div class="canvasOuter">
+        <img #inputImg id="inputImg">
+        <img #displayImg   id="displayImg"/>
+        <canvas #uploadCanvas id="uploadCanvas1" style="display:  none;"></canvas>
+     </div>
+    </div>
+
+<div mat-dialog-actions>
+    <div class="flex">
+
+    <!-- <button mat-button (click)="onNoClick()">Cancel</button> -->
+    <button mat-button  (click)="rotateControl(1)">
+        <i class="fa-solid fa-rotate-left"></i>
+    </button>
+    <button mat-button color="primary" cdkFocusInitial style="width: 100%;" (click)="cropIt()">Crop it</button>
+    <button mat-button  (click)="rotateControl(-1)">
+        <i class="fa-solid fa-rotate-right"></i>
+    </button>
+    </div>
+  </div>
+</div>

@@ -22,12 +22,18 @@ import {MatSelectModule} from '@angular/material/select';
 import { HomepageComponent } from './pages/homepage/homepage.component';
 import { ScanToProjectPageComponent } from './pages/scan-to-project-page/scan-to-project-page.component';
 import { FormsModule } from '@angular/forms';
+import { CameraDialogComponent } from './dialogs/camera-dialog/camera-dialog.component';
+import { CropDialogComponent } from './dialogs/crop-dialog/crop-dialog.component';
+import { UploadDialogComponent } from './dialogs/upload-dialog/upload-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
     HomepageComponent,
     ScanToProjectPageComponent,
+    CameraDialogComponent,
+    CropDialogComponent,
+    UploadDialogComponent,
 
 
 

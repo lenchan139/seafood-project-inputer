@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CameraDialogComponent } from 'src/app/dialogs/camera-dialog/camera-dialog.component';
+import { CropDialogComponent } from 'src/app/dialogs/crop-dialog/crop-dialog.component';
 import { CommonService } from 'src/app/services/common.service';
-declare const jscanify: any
-declare const cv : any
+declare var jscanify: any
+declare var cv: any
 
 @Component({
   selector: 'app-scan-to-project-page',
@@ -16,6 +19,7 @@ export class ScanToProjectPageComponent implements OnInit {
   @ViewChild('outputCanvas') outputCanvas: ElementRef<HTMLCanvasElement> | undefined
   constructor(
     private commonService: CommonService,
+    private dialog: MatDialog,
   ) {
 
   }
@@ -60,11 +64,11 @@ export class ScanToProjectPageComponent implements OnInit {
   }
   isFromSteaming = false;
   openCameraCaputureDocument() {
- 
+
     if (this.uploadCanvas?.nativeElement) {
       const scanner = new jscanify();
       navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-      
+
         const video = document.createElement('video');
         video.srcObject = stream;
         const canvasCtx = this.uploadCanvas!.nativeElement.getContext("2d");
@@ -84,22 +88,22 @@ export class ScanToProjectPageComponent implements OnInit {
               canvasCtx.clearRect(0, 0, this.uploadCanvas!.nativeElement.width, this.uploadCanvas!.nativeElement.height);  // Clear the canvas
               canvasCtx.drawImage(resultCanvas, 0, 0);  // Draw the highlighted paper'
               // console.log('vv',scanner.getCornerPoints())
-            // this.selectedImage!.nativeElement.src = ca
+              // this.selectedImage!.nativeElement.src = ca
             }, 10);
           }
         };
-      }).finally(()=>{
+      }).finally(() => {
         this.isFromSteaming = false;
       });
-    }else{
+    } else {
 
       // this.isFromSteaming = false;
     }
   }
-  caputureSteamingAndToImage(){
+  caputureSteamingAndToImage() {
     const canvasImg = this.uploadCanvas?.nativeElement.toDataURL()
     this.isFromSteaming = false;
-    if(canvasImg){
+    if (canvasImg) {
       this.selectedImage!.nativeElement!.onload = (e) => {
         this.convertImgToDocumentCanvas()
       }
@@ -115,28 +119,53 @@ export class ScanToProjectPageComponent implements OnInit {
     }
   }
 
-  rotateControl(rotate:-1|1){
+  rotateControl(rotate: -1 | 1) {
     let src = cv.imread('generatedCanvas');
     let dst = new cv.Mat();
-    cv.rotate(src, dst, rotate == -1 ? cv.ROTATE_90_CLOCKWISE:cv.ROTATE_90_COUNTERCLOCKWISE);
+    cv.rotate(src, dst, rotate == -1 ? cv.ROTATE_90_CLOCKWISE : cv.ROTATE_90_COUNTERCLOCKWISE);
     cv.imshow('generatedCanvas', dst);
     src.delete()
     dst.delete()
   }
-  
+
   convertImgToDocumentCanvas() {
     if (this.selectedImage?.nativeElement?.src && this.resultCanvas?.nativeElement) {
       const scanner = new jscanify();
-      const paperWidth = 768 ;
+      const paperWidth = 768;
       const paperHeight = 1024;
-      const generatedCanvas = scanner.extractPaper(this.uploadCanvas!.nativeElement,paperWidth,paperHeight);
+      const generatedCanvas = scanner.extractPaper(this.uploadCanvas!.nativeElement, paperWidth, paperHeight);
       console.log('canvas', generatedCanvas)
       this.resultCanvas.nativeElement.innerHTML = ''
       this.resultCanvas.nativeElement.appendChild(generatedCanvas);
-     const f=  <HTMLCanvasElement> this.resultCanvas!.nativeElement.firstChild
-     if(f) f.id = 'generatedCanvas'
+      const f = <HTMLCanvasElement>this.resultCanvas!.nativeElement.firstChild
+      if (f) f.id = 'generatedCanvas'
     };
 
   }
-  
+
+  openCameraDialog() {
+    const dialogRef = this.dialog.open(CameraDialogComponent, {
+      data: {
+
+      }
+    })
+    dialogRef.afterClosed().subscribe(dataURL => {
+      if(dataURL){
+        console.log(dataURL)
+        this.openCropDialog(dataURL)
+      }
+    })
+  }
+  openCropDialog(dataURL: string){
+    const dialogRef = this.dialog.open(CropDialogComponent, {
+      data: {
+        dataURL: dataURL,
+      }
+    })
+    dialogRef.afterClosed().subscribe(dataURL => {
+      if(dataURL){
+        console.log(dataURL)
+      }
+    })
+  }
 }

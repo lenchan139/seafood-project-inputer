@@ -1,0 +1,18 @@
+<div class="dialog">
+    <div mat-dialog-content>
+     <div class="canvasOuter">
+        <!-- <img #drawerimg  style="display: none;"/> -->
+        <canvas #uploadCanvas id="uploadCanvas1" ></canvas>
+     </div>
+    </div>
+
+<div mat-dialog-actions>
+    <div class="flex">
+
+    <!-- <button mat-button (click)="onNoClick()">Cancel</button> -->
+
+    <button mat-button color="primary" cdkFocusInitial style="width: 100%;" (click)="uploadIt()">Upload</button>
+
+    </div>
+  </div>
+</div>

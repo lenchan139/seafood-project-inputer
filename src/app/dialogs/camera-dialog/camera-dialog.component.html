@@ -1,0 +1,15 @@
+<div class="dialog">
+    <div mat-dialog-content>
+     <div class="canvasOuter">
+
+        <canvas #uploadCanvas id="uploadCanvas" style="display: none;"></canvas>
+        <img #displayImg id="displayImg" />
+        <img #uploadImg id="uploadImg" />
+     </div>
+    </div>
+
+<div mat-dialog-actions>
+    <!-- <button mat-button (click)="onNoClick()">Cancel</button> -->
+    <button mat-button  color="primary" cdkFocusInitial (click)="convertImgToDocumentCanvas()">Take it</button>
+  </div>
+</div>
