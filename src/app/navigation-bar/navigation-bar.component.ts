@@ -111,6 +111,11 @@ export class NavigationBarComponent {
         path: '/scan2project',
         // requireLogin: false,
       },
+      {
+        icon :'home icon',
+        displayName:'touchNtest',
+        path:'/touchNtest'
+      }
 
    
       // {

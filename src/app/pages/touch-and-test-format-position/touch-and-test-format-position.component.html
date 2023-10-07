@@ -1,0 +1,9 @@
+<div class="all">
+    <div class="impageView">
+        <img style="width: 100%;" class="loadImg" #loadImg  src="/assets/test_images/test.png" (click)="onImgClick($event)" (load)="drawAllBox()"/>
+        <canvas #drawingCanvas ></canvas>
+    </div>
+    <button (click)="drawAllBox()">
+        redraw Boxes
+    </button>
+</div>

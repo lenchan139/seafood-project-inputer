@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { CameraDialogComponent } from './dialogs/camera-dialog/camera-dialog.component';
 import { CropDialogComponent } from './dialogs/crop-dialog/crop-dialog.component';
 import { UploadDialogComponent } from './dialogs/upload-dialog/upload-dialog.component';
+import { TouchAndTestFormatPositionComponent } from './pages/touch-and-test-format-position/touch-and-test-format-position.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +35,7 @@ import { UploadDialogComponent } from './dialogs/upload-dialog/upload-dialog.com
     CameraDialogComponent,
     CropDialogComponent,
     UploadDialogComponent,
+    TouchAndTestFormatPositionComponent,
 
 
 
