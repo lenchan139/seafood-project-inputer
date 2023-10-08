@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CameraDialogComponent } from 'src/app/dialogs/camera-dialog/camera-dialog.component';
 import { CropDialogComponent } from 'src/app/dialogs/crop-dialog/crop-dialog.component';
+import { UploadDialogComponent } from 'src/app/dialogs/upload-dialog/upload-dialog.component';
 import { CommonService } from 'src/app/services/common.service';
 declare var jscanify: any
 declare var cv: any
@@ -158,6 +159,20 @@ export class ScanToProjectPageComponent implements OnInit {
   }
   openCropDialog(dataURL: string) {
     const dialogRef = this.dialog.open(CropDialogComponent, {
+      data: {
+        dataURL: dataURL,
+      }
+    })
+    dialogRef.afterClosed().subscribe(dataURL => {
+      if (dataURL) {
+        console.log(dataURL)
+        this.openFinalUploadDialog(dataURL)
+      }
+    })
+  }
+
+  openFinalUploadDialog(dataURL: string) {
+    const dialogRef = this.dialog.open(UploadDialogComponent, {
       data: {
         dataURL: dataURL,
       }

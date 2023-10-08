@@ -48,6 +48,21 @@ export class BoxCropperSetService {
 
     }
   }
+  cropCanvas(sourceCanvas: HTMLCanvasElement, left: number, top: number, width: number, height: number) {
+    let destCanvas = document.createElement('canvas');
+    destCanvas.width = width;
+    destCanvas.height = height;
+    const ctx = destCanvas.getContext("2d")
+    if (ctx) {
+      ctx.drawImage(
+        sourceCanvas,
+        left, top, width, height,  // source rect with content to crop
+        0, 0, width, height);      // newCanvas, same size as source rect
+      return destCanvas;
+    }
+    return null;
+  }
+
 }
 
 export type IBoxType = 'nameBox' | 'firstBox' | 'lastBox'

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 declare var cv: any
 @Component({
   selector: 'app-crop-dialog',
@@ -16,6 +16,7 @@ export class CropDialogComponent implements AfterViewInit {
 
 
     @Inject(MAT_DIALOG_DATA) public data: { dataURL: string },
+    private dialogRef: MatDialogRef<CropDialogComponent>,
   ) {
 
     if (data && data.dataURL) {
@@ -29,10 +30,10 @@ export class CropDialogComponent implements AfterViewInit {
     this.inputImg!.nativeElement.src = this.inLoadDataUrl
     if (this.inputImg?.nativeElement && this.uploadCanvas?.nativeElement) {
       this.inputImg!.nativeElement.addEventListener("load", () => {
-        this.uploadCanvas!.nativeElement!.width = this.inputImg?.nativeElement.naturalWidth||0
-        this.uploadCanvas!.nativeElement!.height = this.inputImg?.nativeElement.naturalHeight||0
+        this.uploadCanvas!.nativeElement!.width = this.inputImg?.nativeElement.naturalWidth || 0
+        this.uploadCanvas!.nativeElement!.height = this.inputImg?.nativeElement.naturalHeight || 0
         const ctx = this.uploadCanvas!.nativeElement!.getContext("2d")
-        
+
         if (ctx) {
           ctx.drawImage(this.inputImg!.nativeElement, 0, 0);
           // this.uploadCanvas!.nativeElement!.width = this.inputImg?.nativeElement.naturalWidth || 0
@@ -43,12 +44,15 @@ export class CropDialogComponent implements AfterViewInit {
       });
 
       this.inputImg!.nativeElement.setAttribute("src", this.inLoadDataUrl);
-      
+
     }
   }
 
   cropIt() {
-
+    const dataURL = this.uploadCanvas?.nativeElement.toDataURL()
+    if (dataURL) {
+      this.dialogRef.close(dataURL)
+    }
   }
   updateCanvasToImg() {
     if (this.displayImg?.nativeElement && this.uploadCanvas?.nativeElement) {
