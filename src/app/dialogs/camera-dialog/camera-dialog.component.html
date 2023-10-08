@@ -3,7 +3,7 @@
     <div class="canvasOuter">
       <div class="displayInner">
 
-        <video #thisVideoCamera style="width: 100%;" onplaying="console.log('onplay')"></video>
+        <video #thisVideoCamera style="width: 100%;" onplaying="console.log('onplay')" playsinline></video>
         <img #displayImg id="displayImg" />
       </div>
       <canvas #uploadCanvas id="uploadCanvas" style="display: none;"></canvas>
