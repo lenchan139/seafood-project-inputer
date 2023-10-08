@@ -6,8 +6,10 @@
       <div class="canvasSets">
         <div class="cSet">
           <h2>Name Box</h2>
-          <canvas #nameboxCanvas style="display: none;"></canvas>
+          <canvas #nameboxCanvas id="nameboxCanvas" style="display: none;" ></canvas>
           <img #nameboxImg style="width: 100%;" />
+
+
         </div>
         <hr />
         <div class="cSet">
@@ -23,6 +25,12 @@
         </div>
       </div>
     </div>
+    <div class="discard" style="display: none;">
+      <canvas #testMask id="testMask"></canvas>
+      <canvas #cannyContrastBrightness id="cannyContrastBrightness"></canvas>
+      <canvas #cannyEdge id="cannyEdge"></canvas>
+      <canvas #cannyMask id="cannyMask"></canvas>
+      <canvas #cannyResult id="cannyResult"></canvas></div>
   </div>
 
   <div mat-dialog-actions>

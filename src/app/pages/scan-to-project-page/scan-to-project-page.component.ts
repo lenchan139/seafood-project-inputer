@@ -186,4 +186,5 @@ export class ScanToProjectPageComponent implements OnInit {
       }
     })
   }
+
 }
