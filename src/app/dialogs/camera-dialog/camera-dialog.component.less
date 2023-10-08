@@ -1,9 +1,29 @@
-.dialog{
-    .canvasOuter{
-    max-width: 90vw;
-    max-height: 90vh;
-    #displayImg{
-        width: 100% !important;
+.dialog {
+    .canvasOuter {
+        max-width: 90vw;
+        max-height: 90vh;
+
+        #displayImg {
+            width: 100% !important;
+        }
+
+        .displayInner {
+        position: relative;
+        width: 100%;
+        top: 0;
+            video {
+                // position: relative;
+                top: 0;
+                left: 0;
+                z-index: 10;
+            }
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 100;
+            }
+        }
     }
-}
 }

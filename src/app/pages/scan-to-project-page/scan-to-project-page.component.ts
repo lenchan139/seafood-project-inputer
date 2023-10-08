@@ -71,7 +71,9 @@ export class ScanToProjectPageComponent implements OnInit {
 
     if (this.uploadCanvas?.nativeElement) {
       const scanner = new jscanify();
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+      navigator.mediaDevices.getUserMedia({ video: {
+        facingMode: 'environment'
+      } }).then((stream) => {
 
         const video = document.createElement('video');
         video.srcObject = stream;
@@ -82,6 +84,7 @@ export class ScanToProjectPageComponent implements OnInit {
           this.uploadCanvas!.nativeElement.height = video.videoHeight;
 
           video.play();
+          // video.on
           if (canvasCtx) {
             setInterval(() => {
               // Draw the video frame on the canvas

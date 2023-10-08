@@ -1,16 +1,19 @@
 <div class="dialog">
-    <div mat-dialog-content>
-     <div class="canvasOuter">
+  <div mat-dialog-content>
+    <div class="canvasOuter">
+      <div class="displayInner">
 
-        <canvas #uploadCanvas id="uploadCanvas" style="display: none;"></canvas>
+        <video #thisVideoCamera style="width: 100%;" onplaying="console.log('onplay')"></video>
         <img #displayImg id="displayImg" />
-        <img #uploadImg id="uploadImg" />
-        <img #inputImg1 id="inputImg"  style="display: none;"/>
-     </div>
+      </div>
+      <canvas #uploadCanvas id="uploadCanvas" style="display: none;"></canvas>
+      <img #uploadImg id="uploadImg" />
+      <img #inputImg1 id="inputImg" style="display: none;" />
     </div>
+  </div>
 
-<div mat-dialog-actions>
+  <div mat-dialog-actions>
     <!-- <button mat-button (click)="onNoClick()">Cancel</button> -->
-    <button mat-button  color="primary" cdkFocusInitial (click)="convertImgToDocumentCanvas()">Take it</button>
+    <button mat-button color="primary" cdkFocusInitial (click)="convertImgToDocumentCanvas()">Take it</button>
   </div>
 </div>
