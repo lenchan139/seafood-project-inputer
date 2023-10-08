@@ -34,7 +34,7 @@ export class ScanToProjectPageComponent implements OnInit {
 
   }
 
-
+  uploadWithoutCrop = false;
   async onUploadImage(e: Event) {
     console.log(e)
     console.log(e.target)
@@ -53,8 +53,10 @@ export class ScanToProjectPageComponent implements OnInit {
           //   this.convertImgToDocumentCanvas()
           // }
           // this.selectedImage!.nativeElement!.src = URL.createObjectURL(tfile1)
-          this.openCameraDialog(URL.createObjectURL(tfile1))
-
+          if (this.uploadWithoutCrop)
+            this.openCropDialog(URL.createObjectURL(tfile1))
+          else
+            this.openCameraDialog(URL.createObjectURL(tfile1))
 
 
         } catch (e: any) {
@@ -71,9 +73,11 @@ export class ScanToProjectPageComponent implements OnInit {
 
     if (this.uploadCanvas?.nativeElement) {
       const scanner = new jscanify();
-      navigator.mediaDevices.getUserMedia({ video: {
-        facingMode: 'environment'
-      } }).then((stream) => {
+      navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: 'environment'
+        }
+      }).then((stream) => {
 
         const video = document.createElement('video');
         video.srcObject = stream;
@@ -150,10 +154,10 @@ export class ScanToProjectPageComponent implements OnInit {
 
   }
 
-  openCameraDialog(dataURL?:string) {
+  openCameraDialog(dataURL?: string) {
     const dialogRef = this.dialog.open(CameraDialogComponent, {
       data: {
-        dataURL:dataURL||''
+        dataURL: dataURL || ''
       }
     })
     dialogRef.afterClosed().subscribe(dataURL => {

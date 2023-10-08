@@ -20,10 +20,18 @@
             <button mat-raised-button color="primary"
             *ngIf="!isProductionEnv"
     
-            (click)="clickInputUploadImage();"
+            (click)="uploadWithoutCrop=false;clickInputUploadImage();"
             >
         Upload
         </button>
+
+        <button mat-raised-button color="primary"
+        *ngIf="!isProductionEnv"
+
+        (click)="uploadWithoutCrop=true;clickInputUploadImage();"
+        >
+    Upload without auto-crop
+    </button>
   </div>
 
     
