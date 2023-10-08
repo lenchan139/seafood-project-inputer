@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+declare var cv :any
 @Injectable({
   providedIn: 'root'
 })
@@ -71,6 +71,76 @@ export class BoxCropperSetService {
     return null;
   }
 
+  canny(inCanvas: HTMLCanvasElement, resultCanvasId: string,) {
+    // const { orgImg, brightness, contrast } = this.state;
+    if (!inCanvas) return;
+    const contrast = 1.5;
+    const brightness = -60;
+    const orgImg = cv.imread(inCanvas);
+    // contrast & brightness
+    const canny = new cv.Mat();
+    orgImg.convertTo(canny, -1, contrast, brightness);
+    // cv.imshow("cannyContrastBrightness", canny);
+
+    // gray->blur->canny
+    cv.cvtColor(canny, canny, cv.COLOR_BGR2GRAY);
+    cv.GaussianBlur(canny, canny, { width: 9, height: 9 }, 0);
+    cv.Canny(canny, canny, 100, 200);
+    // cv.imshow("cannyEdge", canny);
+
+    // find contours (and sort by area?)
+    const contours = new cv.MatVector();
+    const hierarchy = new cv.Mat();
+    cv.findContours(
+      canny,
+      contours,
+      hierarchy,
+      cv.RETR_EXTERNAL,
+      cv.CHAIN_APPROX_SIMPLE
+    );
+
+    // mask: flood fill
+    const mask = cv.Mat.zeros(canny.rows, canny.cols, canny.type());
+    for (let i = 0; i < contours.size(); ++i) {
+      const contour = contours.get(i);
+      cv.fillConvexPoly(mask, contour, [255, 255, 255, 1]);
+      contour.delete();
+    }
+    // smooth mask and blur
+    const tempMat = new cv.Mat();
+    cv.dilate(mask, mask, tempMat, { x: -1, y: -1 }, 10);
+    cv.erode(mask, mask, tempMat, { x: -1, y: -1 }, 10);
+    cv.GaussianBlur(mask, mask, { width: 9, height: 9 }, 0);
+    tempMat.delete();
+    // cv.imshow("cannyMask", mask);
+
+    // blend result
+    const foreground = new cv.Mat();
+    // Convert Mat to float data type
+    orgImg.convertTo(foreground, cv.CV_32FC4, 1 / 255);
+    // Normalize the alpha mask to keep intensity between 0 and 1
+    const newMask = new cv.Mat();
+    const maskStack = new cv.MatVector();
+    mask.convertTo(mask, cv.CV_32FC4, 1.0 / 255);
+    maskStack.push_back(mask);
+    maskStack.push_back(mask);
+    maskStack.push_back(mask);
+    maskStack.push_back(mask);
+    cv.merge(maskStack, newMask);
+    // console.log(newMask.type(), foreground.type(), orgImg.type());
+    cv.multiply(newMask, foreground, foreground);
+    foreground.convertTo(foreground, cv.CV_8UC3, 255);
+    cv.imshow(inCanvas?.id, foreground);
+
+    // cleanup
+    foreground.delete();
+    mask.delete();
+    contours.delete();
+    hierarchy.delete();
+    canny.delete();
+    orgImg.delete();
+
+  };
 }
 
 export type IBoxType = 'nameBox' | 'firstBox' | 'lastBox' | 'qrcodeBox'

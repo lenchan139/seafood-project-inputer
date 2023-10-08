@@ -5,15 +5,15 @@
       <canvas #uploadCanvas id="uploadCanvas1" style="display: none;"></canvas>
       <div class="canvasSets">
         <div class="cSet qrcodebox">
-          <h2>Template Name</h2>
-          <ng-container>
+          <h2 class="template_title">
+         Template Name:   {{templateName}}
+          </h2>
+          <ng-container *ngIf="!shouldHideTemplatQrcode">
 
             <canvas #qrcodeBoxCanvas id="qrcodeBoxCanvas" style="display: none;"></canvas>
             <img #qrcodeBoxImg style="width: 100%;" />
           </ng-container>
-          <p>
-            {{templateName}}
-          </p>
+       
 
         </div>
         <div class="cSet">

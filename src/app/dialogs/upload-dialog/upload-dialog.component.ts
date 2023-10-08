@@ -1,6 +1,7 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BoxCropperSetService, IBoxType } from 'src/app/services/box-cropper-set.service';
+declare var QrcodeDecoder : any 
 declare var cv: any
 @Component({
   selector: 'app-upload-dialog',
@@ -22,7 +23,8 @@ export class UploadDialogComponent {
   @ViewChild('box1img') box1img: ElementRef<HTMLImageElement> | undefined
   @ViewChild('box2img') box2img: ElementRef<HTMLImageElement> | undefined
   @ViewChild('qrcodeBoxImg') qrcodeBoxImg: ElementRef<HTMLImageElement> | undefined
-  templateName = 'unknown_template'
+  templateName = '_unknown_template'
+  shouldHideTemplatQrcode = false
   constructor(
 
 
@@ -50,6 +52,7 @@ export class UploadDialogComponent {
           this.cropBoxToCanvas('firstBox')
           this.cropBoxToCanvas('lastBox')
           this.cropBoxToCanvas('qrcodeBox')
+          this.tryDecodeQrcode()
         }
       });
 
@@ -57,6 +60,36 @@ export class UploadDialogComponent {
     }
   }
 
+  tryDecodeQrcode() {
+    const qr = new QrcodeDecoder();
+    const imgT = new Image()
+    imgT.onload = ()=>{
+      qr.decodeFromImage(imgT).then((v: any)=>{
+        console.log('got data from qr', v)
+        if(v?.data && typeof v?.data  == 'string'){
+          const qrData = <string> v.data
+         try{
+          const url = new URL(qrData)
+          this.templateName =   url.searchParams.get('templateName') ||'_qr_got_with_empty_tname'
+         }catch(e:any){
+          console.error('e',e)
+          if(e instanceof TypeError){
+            this.templateName = '_qr_got_but_not_valid_url'
+          }
+
+         }
+        }
+      })
+      .catch((e: any)=>{
+        console.error('got error from qr', e)
+      })
+      .finally(()=>{
+        console.log('load qr end')
+        this.shouldHideTemplatQrcode = true;
+      })
+    }
+    imgT.src = this.qrcodeBoxCanvas!.nativeElement.toDataURL()
+  }
 
   cropBoxToCanvas(type: IBoxType) {
     if (type && this.nameboxCanvas?.nativeElement && this.box1canvas?.nativeElement && this.box2canvas?.nativeElement) {
@@ -82,7 +115,7 @@ export class UploadDialogComponent {
           this.uploadCanvas!.nativeElement,
           boxDataset.topLeft.x, boxDataset.topLeft.y, squaredWidth, squaredHeight,  // source rect with content to crop
           0, 0, squaredWidth, squaredHeight);      // newCanvas, same size as source rect
-        this.canny(canvasElement, canvasElement.id)
+        this.boxCropService.canny(canvasElement, canvasElement.id)
         imgElement.src = canvasElement.toDataURL()
       }
 
@@ -90,76 +123,6 @@ export class UploadDialogComponent {
   }
 
 
-  canny(inCanvas: HTMLCanvasElement, resultCanvasId: string,) {
-    // const { orgImg, brightness, contrast } = this.state;
-    if (!inCanvas) return;
-    const contrast = 1.5;
-    const brightness = -60;
-    const orgImg = cv.imread(inCanvas);
-    // contrast & brightness
-    const canny = new cv.Mat();
-    orgImg.convertTo(canny, -1, contrast, brightness);
-    cv.imshow("cannyContrastBrightness", canny);
-
-    // gray->blur->canny
-    cv.cvtColor(canny, canny, cv.COLOR_BGR2GRAY);
-    cv.GaussianBlur(canny, canny, { width: 9, height: 9 }, 0);
-    cv.Canny(canny, canny, 100, 200);
-    cv.imshow("cannyEdge", canny);
-
-    // find contours (and sort by area?)
-    const contours = new cv.MatVector();
-    const hierarchy = new cv.Mat();
-    cv.findContours(
-      canny,
-      contours,
-      hierarchy,
-      cv.RETR_EXTERNAL,
-      cv.CHAIN_APPROX_SIMPLE
-    );
-
-    // mask: flood fill
-    const mask = cv.Mat.zeros(canny.rows, canny.cols, canny.type());
-    for (let i = 0; i < contours.size(); ++i) {
-      const contour = contours.get(i);
-      cv.fillConvexPoly(mask, contour, [255, 255, 255, 1]);
-      contour.delete();
-    }
-    // smooth mask and blur
-    const tempMat = new cv.Mat();
-    cv.dilate(mask, mask, tempMat, { x: -1, y: -1 }, 10);
-    cv.erode(mask, mask, tempMat, { x: -1, y: -1 }, 10);
-    cv.GaussianBlur(mask, mask, { width: 9, height: 9 }, 0);
-    tempMat.delete();
-    cv.imshow("cannyMask", mask);
-
-    // blend result
-    const foreground = new cv.Mat();
-    // Convert Mat to float data type
-    orgImg.convertTo(foreground, cv.CV_32FC4, 1 / 255);
-    // Normalize the alpha mask to keep intensity between 0 and 1
-    const newMask = new cv.Mat();
-    const maskStack = new cv.MatVector();
-    mask.convertTo(mask, cv.CV_32FC4, 1.0 / 255);
-    maskStack.push_back(mask);
-    maskStack.push_back(mask);
-    maskStack.push_back(mask);
-    maskStack.push_back(mask);
-    cv.merge(maskStack, newMask);
-    // console.log(newMask.type(), foreground.type(), orgImg.type());
-    cv.multiply(newMask, foreground, foreground);
-    foreground.convertTo(foreground, cv.CV_8UC3, 255);
-    cv.imshow(inCanvas?.id, foreground);
-
-    // cleanup
-    foreground.delete();
-    mask.delete();
-    contours.delete();
-    hierarchy.delete();
-    canny.delete();
-    orgImg.delete();
-
-  };
   uploadIt() {
 
   }

@@ -1,10 +1,20 @@
 <div class="dialog">
     <div mat-dialog-content>
+        
      <div class="canvasOuter">
         <img #inputImg id="inputImg">
         <img #displayImg   id="displayImg"/>
         <canvas #uploadCanvas id="uploadCanvas1" style="display:  none;"></canvas>
      </div>
+     <div class="qrcode">
+
+        <ng-container *ngIf="!shouldHideTemplatQrcode">
+QRCODE BOX
+            <canvas #qrcodeBoxCanvas id="qrcodeBoxCanvas" style="display: none;"></canvas>
+            <img #qrcodeBoxImg style="width: 100%;" />
+          </ng-container>
+     </div>
+     
     </div>
 
 <div mat-dialog-actions>
