@@ -45,8 +45,8 @@ export class UploadDialogComponent {
         if (ctx) {
           ctx.drawImage(img, 0, 0);
           this.cropBoxToCanvas('nameBox')
-          // this.cropBoxToCanvas('firstBox')
-          // this.cropBoxToCanvas('lastBox')
+          this.cropBoxToCanvas('firstBox')
+          this.cropBoxToCanvas('lastBox')
         }
       });
 
