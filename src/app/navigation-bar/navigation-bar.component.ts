@@ -5,6 +5,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SubLevelNavItem } from '../interface/NavigationItems';
 import { CommonService } from '../services/common.service';
 import { Observable, map, shareReplay, startWith } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 declare const $: any
 @Component({
@@ -17,7 +18,9 @@ export class NavigationBarComponent {
   @ViewChild('toolbar') toolbar: ElementRef | undefined
 
   @ViewChild('drawer') public sidenav: MatSidenav | undefined
-
+  get appTitle(){
+    return environment.appTitle
+  }
   topNavItems: Array<SubLevelNavItem> = [];
   constructor(
 
