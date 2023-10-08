@@ -14,12 +14,14 @@ export class UploadDialogComponent {
   @ViewChild('nameboxCanvas') nameboxCanvas: ElementRef<HTMLCanvasElement> | undefined
   @ViewChild('box1canvas') box1canvas: ElementRef<HTMLCanvasElement> | undefined
   @ViewChild('box2canvas') box2canvas: ElementRef<HTMLCanvasElement> | undefined
+  @ViewChild('qrcodeBoxCanvas') qrcodeBoxCanvas: ElementRef<HTMLCanvasElement> | undefined
   @ViewChild('testMask') testMask: ElementRef<HTMLCanvasElement> | undefined
 
 
   @ViewChild('nameboxImg') nameboxImg: ElementRef<HTMLImageElement> | undefined
   @ViewChild('box1img') box1img: ElementRef<HTMLImageElement> | undefined
   @ViewChild('box2img') box2img: ElementRef<HTMLImageElement> | undefined
+  @ViewChild('qrcodeBoxImg') qrcodeBoxImg: ElementRef<HTMLImageElement> | undefined
 
   constructor(
 
@@ -47,6 +49,7 @@ export class UploadDialogComponent {
           this.cropBoxToCanvas('nameBox')
           this.cropBoxToCanvas('firstBox')
           this.cropBoxToCanvas('lastBox')
+          this.cropBoxToCanvas('qrcodeBox')
         }
       });
 
@@ -62,8 +65,8 @@ export class UploadDialogComponent {
         this.uploadCanvas!.nativeElement.height,
         type
       )
-      const canvasElement = type == 'nameBox' ? this.nameboxCanvas!.nativeElement : type == 'firstBox' ? this.box1canvas!.nativeElement : this.box2canvas!.nativeElement
-      const imgElement = type == 'nameBox' ? this.nameboxImg!.nativeElement : type == 'firstBox' ? this.box1img!.nativeElement : this.box2img!.nativeElement
+      const canvasElement = type == 'qrcodeBox' ? this.qrcodeBoxCanvas!.nativeElement : type == 'nameBox' ? this.nameboxCanvas!.nativeElement : type == 'firstBox' ? this.box1canvas!.nativeElement : this.box2canvas!.nativeElement
+      const imgElement = type == 'qrcodeBox' ? this.qrcodeBoxImg!.nativeElement : type == 'nameBox' ? this.nameboxImg!.nativeElement : type == 'firstBox' ? this.box1img!.nativeElement : this.box2img!.nativeElement
       // end get input data,then calculate width/height
       const squaredWidth = boxDataset.bottomRight.x - boxDataset.bottomLeft.x
       const squaredHeight = boxDataset.bottomRight.y - boxDataset.topRight.y
@@ -79,7 +82,7 @@ export class UploadDialogComponent {
           this.uploadCanvas!.nativeElement,
           boxDataset.topLeft.x, boxDataset.topLeft.y, squaredWidth, squaredHeight,  // source rect with content to crop
           0, 0, squaredWidth, squaredHeight);      // newCanvas, same size as source rect
-          this.canny(canvasElement, canvasElement.id)
+        this.canny(canvasElement, canvasElement.id)
         imgElement.src = canvasElement.toDataURL()
       }
 

@@ -68,6 +68,7 @@ export class TouchAndTestFormatPositionComponent implements AfterViewInit {
     this.drawNameBox('nameBox')
     this.drawNameBox('firstBox')
     this.drawNameBox('lastBox')
+    this.drawNameBox('qrcodeBox')
     this.endDraw()
   }
   copyImgToCanvas() {

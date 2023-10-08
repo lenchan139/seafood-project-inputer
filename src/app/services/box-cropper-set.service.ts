@@ -24,6 +24,14 @@ export class BoxCropperSetService {
         leftTop: { x: 0, y: 0.5909752547307132 },
         rightBottom: { x: 1, y: 0.8646288209606987 }
       }
+    ],
+    [
+      "qrcodeBox",
+      {
+        // clicked x=70.8% y=24.308588064%
+        leftTop: { x: 0.708, y: 0 },
+        rightBottom: { x: 1, y: 0.24308588 }
+      }
     ]
   ])
   getBoxCornerActualPosition(width: number, height: number, typeBox: IBoxType): IBoxCornerResult {
@@ -65,7 +73,7 @@ export class BoxCropperSetService {
 
 }
 
-export type IBoxType = 'nameBox' | 'firstBox' | 'lastBox'
+export type IBoxType = 'nameBox' | 'firstBox' | 'lastBox' | 'qrcodeBox'
 interface IXY {
   x: number,
   y: number,
