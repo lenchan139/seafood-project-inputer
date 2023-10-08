@@ -11,7 +11,9 @@ declare var cv: any
 export class CameraDialogComponent implements AfterViewInit {
   @ViewChild('thisVideoCamera') thisVideoCamera: ElementRef<HTMLVideoElement> | undefined
   @ViewChild('uploadCanvas') uploadCanvas: ElementRef<HTMLCanvasElement> | undefined
+  @ViewChild('displayCanvas') displayCanvas: ElementRef<HTMLCanvasElement> | undefined
   @ViewChild('displayImg') displayImg: ElementRef<HTMLImageElement> | undefined
+  
   @ViewChild('uploadImg') uploadImg: ElementRef<HTMLImageElement> | undefined
   @ViewChild('inputImg1') inputImg: ElementRef<HTMLImageElement> | undefined
   constructor(
@@ -65,17 +67,20 @@ export class CameraDialogComponent implements AfterViewInit {
         // const video = document.createElement('video');
         const video = this.thisVideoCamera!.nativeElement
         video.srcObject = stream;
-        const canvasCtx = this.uploadCanvas!.nativeElement.getContext("2d");
+        const canvasCtx = this.displayCanvas!.nativeElement.getContext("2d");
+        const uploadCanvasCtx = this.uploadCanvas!.nativeElement.getContext("2d");
 
         video.onloadedmetadata = () => {
 
           this.uploadCanvas!.nativeElement.width = video.videoWidth;
           this.uploadCanvas!.nativeElement.height = video.videoHeight;
+          this.displayCanvas!.nativeElement.width = video.videoWidth;
+          this.displayCanvas!.nativeElement.height = video.videoHeight;
           // stream.
           video.play();
           // video.onpl
           let t: any
-          if (canvasCtx) {
+          if (canvasCtx && uploadCanvasCtx) {
             const callback = () => {
               // clearTimeout(t)
               try {
@@ -88,6 +93,7 @@ export class CameraDialogComponent implements AfterViewInit {
                 // canvasCtx.drawImage(resultCanvas, 0, 0);  // Draw the highlighted paper'
 
                 canvasCtx.drawImage(video, 0, 0);
+                uploadCanvasCtx.drawImage(video,0,0)
                 const c = cv.imread(this.uploadCanvas!.nativeElement)
                 const vxq = scanner.findPaperContour(c)
                 const vx = scanner.getCornerPoints(vxq)
@@ -110,18 +116,18 @@ export class CameraDialogComponent implements AfterViewInit {
                 // canvasCtx.drawImage(video, 0, 0, resultCanvas.width, resultCanvas.height);
                 // canvasCtx.clearRect(0, 0, this.uploadCanvas!.nativeElement.width, this.uploadCanvas!.nativeElement.height);  // Clear the canvas
 
-                this.uploadCanvas!.nativeElement.width = video.videoWidth;
-                this.uploadCanvas!.nativeElement.height = video.videoHeight;
-                canvasCtx.moveTo(vx.topLeftCorner.x, vx.topLeftCorner.y)
-                canvasCtx.lineTo(vx.topRightCorner.x, vx.topRightCorner.y)
-                canvasCtx.lineTo(vx.bottomRightCorner.x, vx.bottomRightCorner.y)
-                canvasCtx.lineTo(vx.bottomLeftCorner.x, vx.bottomLeftCorner.y)
-                canvasCtx.lineTo(vx.topLeftCorner.x, vx.topLeftCorner.y)
+                this.displayCanvas!.nativeElement.width = video.videoWidth;
+                this.displayCanvas!.nativeElement.height = video.videoHeight;
+                canvasCtx.moveTo(vx.topLeftCorner?.x||0, vx.topLeftCorner?.y||0)
+                canvasCtx.lineTo(vx.topRightCorner?.x||0, vx.topRightCorner?.y||0)
+                canvasCtx.lineTo(vx.bottomRightCorner?.x||0, vx.bottomRightCorner?.y||0)
+                canvasCtx.lineTo(vx.bottomLeftCorner?.x||0, vx.bottomLeftCorner?.y||0)
+                canvasCtx.lineTo(vx.topLeftCorner?.x||0, vx.topLeftCorner?.y||0)
                 canvasCtx.lineWidth = 10
                 canvasCtx.strokeStyle = "orange"
                 canvasCtx.stroke()
                 if (this.displayImg?.nativeElement) {
-                  this.displayImg!.nativeElement!.src = this.uploadCanvas!.nativeElement.toDataURL()
+                  this.displayImg!.nativeElement!.src = this.displayCanvas!.nativeElement.toDataURL()
                 }
                 c.delete()
                 // console.log('vv',scanner.getCornerPoints())
