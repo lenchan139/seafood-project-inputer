@@ -44,7 +44,7 @@ export class ScanToProjectPageComponent implements OnInit {
     if (t?.files && t?.files?.length > 0) {
       const tfile1 = t.files[0]
       const fileReader = new FileReader()
-      if (this.selectedImage && this.selectedImage?.nativeElement && tfile1) {
+      if (tfile1) {
         try {
 
           // const buffer = await tfile1.arrayBuffer()
