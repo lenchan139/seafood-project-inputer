@@ -22,7 +22,7 @@ export class UploadDialogComponent {
   @ViewChild('box1img') box1img: ElementRef<HTMLImageElement> | undefined
   @ViewChild('box2img') box2img: ElementRef<HTMLImageElement> | undefined
   @ViewChild('qrcodeBoxImg') qrcodeBoxImg: ElementRef<HTMLImageElement> | undefined
-
+  templateName = 'unknown_template'
   constructor(
 
 

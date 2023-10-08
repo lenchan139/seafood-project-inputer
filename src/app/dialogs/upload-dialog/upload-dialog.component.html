@@ -5,15 +5,20 @@
       <canvas #uploadCanvas id="uploadCanvas1" style="display: none;"></canvas>
       <div class="canvasSets">
         <div class="cSet qrcodebox">
-          <h2>QRCode Box</h2>
-          <canvas #qrcodeBoxCanvas id="qrcodeBoxCanvas" style="display: none;" ></canvas>
-          <img #qrcodeBoxImg style="width: 100%;" />
+          <h2>Template Name</h2>
+          <ng-container>
 
+            <canvas #qrcodeBoxCanvas id="qrcodeBoxCanvas" style="display: none;"></canvas>
+            <img #qrcodeBoxImg style="width: 100%;" />
+          </ng-container>
+          <p>
+            {{templateName}}
+          </p>
 
         </div>
         <div class="cSet">
           <h2>Name Box</h2>
-          <canvas #nameboxCanvas id="nameboxCanvas" style="display: none;" ></canvas>
+          <canvas #nameboxCanvas id="nameboxCanvas" style="display: none;"></canvas>
           <img #nameboxImg style="width: 100%;" />
 
 
@@ -37,7 +42,8 @@
       <canvas #cannyContrastBrightness id="cannyContrastBrightness"></canvas>
       <canvas #cannyEdge id="cannyEdge"></canvas>
       <canvas #cannyMask id="cannyMask"></canvas>
-      <canvas #cannyResult id="cannyResult"></canvas></div>
+      <canvas #cannyResult id="cannyResult"></canvas>
+    </div>
   </div>
 
   <div mat-dialog-actions>
