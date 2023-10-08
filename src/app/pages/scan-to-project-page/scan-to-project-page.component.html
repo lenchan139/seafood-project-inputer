@@ -15,9 +15,10 @@
         Take Image
         </button>
         
-        <canvas #uploadCanvas id="uploadCanvas" ></canvas>
+        <!-- <canvas #uploadCanvas id="uploadCanvas" ></canvas> -->
  
             <button mat-raised-button color="primary"
+            *ngIf="!isProductionEnv"
     
             (click)="clickInputUploadImage();"
             >
@@ -26,13 +27,13 @@
   </div>
 
     
-    <img #selectedImage id="selectedImage" class="selectedImage" />
+    <!-- <img #selectedImage id="selectedImage" class="selectedImage" /> -->
 
 
-    <canvas #outputCanvas id="outputCanvas" ></canvas>
+    <!-- <canvas #outputCanvas id="outputCanvas" ></canvas>
 
     <button (click)="rotateControl(-1)">Left-R</button>
     <button (click)="rotateControl(1)">Right-R</button>
     
-    <div class="resultCanvas" #resultCanvas ></div>
+    <div class="resultCanvas" #resultCanvas ></div> -->
 </div>

@@ -4,6 +4,7 @@ import { CameraDialogComponent } from 'src/app/dialogs/camera-dialog/camera-dial
 import { CropDialogComponent } from 'src/app/dialogs/crop-dialog/crop-dialog.component';
 import { UploadDialogComponent } from 'src/app/dialogs/upload-dialog/upload-dialog.component';
 import { CommonService } from 'src/app/services/common.service';
+import { environment } from 'src/environments/environment';
 declare var jscanify: any
 declare var cv: any
 
@@ -24,6 +25,8 @@ export class ScanToProjectPageComponent implements OnInit {
   ) {
 
   }
+
+  isProductionEnv = environment.production
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
