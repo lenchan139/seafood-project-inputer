@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node scanner/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "cd scanner && ng build -c production"
+    "heroku-postbuild": "cd scanner && npm i && ng build -c production"
   },
   "author": "",
   "license": "ISC"
