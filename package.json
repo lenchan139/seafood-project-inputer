@@ -1,0 +1,13 @@
+{
+  "name": "seafood-project-inputer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node scanner/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd scanner && ng build -c production"
+  },
+  "author": "",
+  "license": "ISC"
+}
